@@ -68,11 +68,48 @@
       width: 100%;
       height: 100%;
       display: none;
-    }</style></head><body><div class="welcome" id="welcome"><div class="leaves"></div><div class="content"><h1>Iglesia de Tulpo</h1><p>Explora este escenario en Realidad Virtual</p><button class="btn" onclick="entrarVR()">Entrar en VR</button></div></div><canvas id="renderCanvas"></canvas><script defer="defer" src="bundle.a99052be0d130e0d309b.js"></script><script>function entrarVR() {
+    }</style></head><body><div class="welcome" id="welcome"><div class="leaves"></div><div class="content"><h1>Iglesia de Tulpo</h1><p>Explora este escenario en Realidad Virtual</p><button class="btn" onclick="entrarVR()">Entrar en VR</button></div></div><canvas id="renderCanvas"></canvas><script defer="defer" src="bundle.a99052be0d130e0d309b.js"></script>
+      <script>
+            let startTime;
+            function entrarVR() {
     document.getElementById("welcome").style.display = "none";
     document.getElementById("renderCanvas").style.display = "block";
+                      
+            startTime = Date.now(); // Guarda el tiempo de inicio
+            console.log("⏱️ Escena iniciada para usuario:", userId);
+                      
     // 👇 Forzar Cardboard / VR si está disponible
     if (window.enterXR) {
       window.enterXR();
     }
-  }</script><script defer="defer" src="bundle.c5654e41ac87b99f61cd.js"></script></body></html>
+  }
+      // Cuando el usuario cierre la pestaña o navegue fuera
+  window.addEventListener("beforeunload", () => {
+    if (startTime) {
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      console.log("⏱️ Tiempo total:", elapsedSeconds, "segundos");
+
+      // 👉 Enviar a tu API
+      navigator.sendBeacon(
+        "https://tu-api.com/tiempo",
+        JSON.stringify({
+          userId: userId,
+          escena: "Iglesia de Tulpo", // Cambia según el escenario
+          tiempo: elapsedSeconds,
+        })
+      );
+    }
+  });</script>
+          <script defer="defer" src="bundle.c5654e41ac87b99f61cd.js"></script>
+<script>
+  // Función para obtener parámetros de la URL
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // Guardamos el userId recibido
+  const userId = getQueryParam("userId") || "anon";
+  console.log("👤 Usuario activo:", userId);
+</script>
+</body></html>
