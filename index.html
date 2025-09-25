@@ -70,25 +70,23 @@
       display: none;
     }</style></head><body><div class="welcome" id="welcome"><div class="leaves"></div><div class="content"><h1>Iglesia de Tulpo</h1><p>Explora este escenario en Realidad Virtual</p><button class="btn" onclick="entrarVR()">Entrar en VR</button></div></div><canvas id="renderCanvas"></canvas><script defer="defer" src="bundle.a99052be0d130e0d309b.js"></script>
       </script>
-          <script>
-  // 1. Función para obtener parámetros de la URL
+         <script>
+  let startTime;
+  let userId; // se llenará con la URL
+
+  // === Obtener userId desde query string ===
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
   }
-
-  // 2. Guardamos el userId recibido desde Flutter
-  const userId = getQueryParam("userId") || "anon";
+  userId = getQueryParam("userId") || "anon";
   console.log("👤 Usuario activo:", userId);
 
-  let startTime;
-
-  // 3. Función para entrar a VR
   function entrarVR() {
     document.getElementById("welcome").style.display = "none";
     document.getElementById("renderCanvas").style.display = "block";
 
-    startTime = Date.now(); // Guarda el tiempo de inicio
+    startTime = Date.now();
     console.log("⏱️ Escena iniciada para usuario:", userId);
 
     if (window.enterXR) {
@@ -96,7 +94,7 @@
     }
   }
 
-  // 4. Cuando el usuario cierre la pestaña o navegue fuera
+  // === Cuando el usuario cierre la pestaña o navegue fuera ===
   window.addEventListener("beforeunload", () => {
     if (startTime) {
       const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
@@ -104,12 +102,12 @@
 
       const data = JSON.stringify({
         userId: userId,
-        escena: "Iglesia de Tulpo", // Cambia según el escenario
-        tiempoSegundos: elapsedSeconds // 👈 nombre correcto
+        escena: "Iglesia de Tulpo",
+        tiempoSegundos: elapsedSeconds   // 👈 usa el mismo nombre que espera tu API
       });
 
       navigator.sendBeacon(
-        "http://localhost:3000/api/tiempo",
+        "http://localhost:3000/api/tiempo",  // 👈 apunte directo al backend local
         new Blob([data], { type: "application/json" })
       );
     }
@@ -119,6 +117,7 @@
           <script defer="defer" src="bundle.c5654e41ac87b99f61cd.js"></script>
 
 </body></html>
+
 
 
 
