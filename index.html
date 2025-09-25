@@ -97,7 +97,7 @@
     });
 
     navigator.sendBeacon(
-      "https://tu-api.com/tiempo",
+      "http://localhost:3000/tiempo",
       new Blob([data], { type: "application/json" })
     );
   }
@@ -115,4 +115,5 @@
   console.log("👤 Usuario activo:", userId);
 </script>
 </body></html>
+
 
