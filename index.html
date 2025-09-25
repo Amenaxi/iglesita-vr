@@ -90,16 +90,18 @@
       console.log("⏱️ Tiempo total:", elapsedSeconds, "segundos");
 
       // 👉 Enviar a tu API
-      navigator.sendBeacon(
-        "https://tu-api.com/tiempo",
-        JSON.stringify({
-          userId: userId,
-          escena: "Iglesia de Tulpo", // Cambia según el escenario
-          tiempo: elapsedSeconds,
-        })
-      );
-    }
-  });</script>
+     const data = JSON.stringify({
+      userId: userId,
+      escena: "Iglesia de Tulpo", // Cambia según el escenario
+      tiempo: elapsedSeconds,
+    });
+
+    navigator.sendBeacon(
+      "https://tu-api.com/tiempo",
+      new Blob([data], { type: "application/json" })
+    );
+  }
+});</script>
           <script defer="defer" src="bundle.c5654e41ac87b99f61cd.js"></script>
 <script>
   // Función para obtener parámetros de la URL
@@ -113,3 +115,4 @@
   console.log("👤 Usuario activo:", userId);
 </script>
 </body></html>
+
