@@ -97,7 +97,7 @@
     });
 
     navigator.sendBeacon(
-      "http://localhost:3000/tiempo",
+      "http://localhost:3000/api/tiempo",
       new Blob([data], { type: "application/json" })
     );
   }
@@ -115,5 +115,6 @@
   console.log("👤 Usuario activo:", userId);
 </script>
 </body></html>
+
 
 
